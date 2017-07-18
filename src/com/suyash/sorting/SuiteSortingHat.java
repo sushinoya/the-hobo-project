@@ -2,7 +2,6 @@ package com.suyash.sorting;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SuiteSortingHat {
@@ -16,6 +15,7 @@ public class SuiteSortingHat {
 		calculatePopularity();
 	}
 	
+	//Assigns each room a number. The lower the number, the more popular is the room according to the given preferences
 	public void calculatePopularity() {
 		for (int i = 0; i < preferences.length; i++) {
 			for (int j = 0; j < preferences[i].length; j++) {
@@ -42,6 +42,7 @@ public class SuiteSortingHat {
 		return randomNum;
 	}
 	
+	//Generates a random allocation of rooms
 	public Arrangement randomAllocate() {
 		ArrayList<String> names = new ArrayList<String>();
 		String[] rooms = {"A", "B", "C", "D", "E", "F"};
@@ -57,10 +58,7 @@ public class SuiteSortingHat {
 		return new Arrangement(allocationsHash, preferences, residents);
 	}
 	
-	public Arrangement allocateRooms(String[][] preferences) {
-		return null;
-	}
-	
+	//Allocates based on first come first serve.
 	public Arrangement orderBiasedAllocate() {
 		String[][] preferences = this.preferences;
 		TreeMap<String, String> allocations = new TreeMap<String, String>();
@@ -77,50 +75,9 @@ public class SuiteSortingHat {
 		return new Arrangement(allocations, preferences, residents);
 	}
 	
-	public class Arrangement {
-		int happiness;
-		TreeMap<String, String> arrangement; 
-		String[][] preferences;
-		String[] names;
-		
-		
-		public Arrangement(TreeMap<String, String> arrangement, String[][] preferences, String[] names) {
-			this.arrangement = arrangement;
-			this.preferences = preferences;
-			this.names = names;
-			this.happiness = calculateHappinessIndex();
-		}
-		
-		public void printAllocations() {
-			Set<String> keySet = arrangement.keySet();
-			String[] keys = new String[6];
-			keySet.toArray(keys);
-			for (int i = 0; i < arrangement.size(); i++) {
-				String key = keys[i];
-				String value = arrangement.get(key);
-				System.out.println(key + " is assigned room " + value);
-			}
-		}
-		
-		public int calculateHappinessIndex() {
-			int happiness = 0;
-			for(int i = 0; i < names.length; i++) {
-				String name = names[i];
-				String roomAllocated = arrangement.get(name);
-				String[] preference = preferences[i];
-				
-				for(int j = 0; j < preference.length; j++) {
-					if (roomAllocated.equals(preference[j])) {
-						happiness += j;
-					}
-				}
-			}
-			return happiness;
-		}
-	}
-	
 	public static void main (String[] args) {
 		
+		//Test Data
 		String[] namesArray = {"Suyash", "Zhenye", "Miguel", "Haozhe", "Shitian", "Alistair"};
 		String[] suyash =   {"B", "D", "A", "C", "E", "F"};
 		String[] zhenye =   {"C", "E", "F", "B", "D", "A"};
@@ -133,6 +90,8 @@ public class SuiteSortingHat {
 		
 		SuiteSortingHat hobohat = new SuiteSortingHat(namesArray, preferenceArray);
 		hobohat.printPopularity();
+		
+		//TESTS
 //		Arrangement biasedAllocation = hobohat.orderBiasedAllocate();
 //		System.out.println("The happiness score for the first-come-first-serve allocation is: " + biasedAllocation.happiness);
 //		biasedAllocation.printAllocations();
