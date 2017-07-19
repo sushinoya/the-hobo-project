@@ -1,5 +1,6 @@
 package com.suyash.sorting;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -32,6 +33,8 @@ public class Arrangement {
 	
 	public int calculateHappinessIndex() {
 		int happiness = 0;
+    	 System.out.println(Arrays.toString(names));
+
 		for(int i = 0; i < names.length; i++) {
 			String name = names[i];
 			String roomAllocated = arrangement.get(name);
@@ -39,6 +42,9 @@ public class Arrangement {
 			
 			for(int j = 0; j < preference.length; j++) {
 				if (roomAllocated.equals(preference[j])) {
+//					System.out.println(preference[j]);
+//					System.out.println(roomAllocated);
+//					System.out.println(roomAllocated + " is " + name + "s Number " + j + " preference.");
 					happiness += j;
 				}
 			}

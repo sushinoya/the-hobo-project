@@ -1,5 +1,6 @@
 package com.suyash.sorting;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -75,6 +76,46 @@ public class SuiteSortingHat {
 		return new Arrangement(allocations, preferences, residents);
 	}
 	
+	int count = 0;
+	//Runs through all 6! combinations to output the optimum arrangement
+	private void bruteForceAllocate(String[] namesArray, int index){
+		String[] names = 
+		String[] rooms = {"A", "B", "C", "D", "E", "F"};
+	    if(index == names.length) {
+	    	// Print order of names
+	    	// System.out.println(Arrays.toString(names));
+	    	count++;
+	    	
+			TreeMap<String, String> allocationsHash= new TreeMap<String, String>();
+	
+			for (int i = 0; i < names.length; i++) {
+				allocationsHash.put(names[i], rooms[i]);
+			}
+			Arrangement output = new Arrangement(allocationsHash, this.preferences, this.residents);
+			output.printAllocations();
+			System.out.println("The happiness score for this arrangement is: " + output.happiness + "\n");
+			System.out.println("Count: " + count);
+	    	 System.out.println(Arrays.toString(residents));
+
+	    }
+	
+	    for(int i = index; i < names.length; i++){ //For each index in the sub namesay names[index...end]
+	
+	        //Swap the elements at indices index and i
+	        String t = names[index];
+	        names[index] = names[i];
+	        names[i] = t;
+	
+	        //Recurse on the sub array names[index+1...end]
+	        bruteForceAllocate(names, index+1);
+	
+	        //Swap the elements back
+	        t = names[index];
+	        names[index] = names[i];
+	        names[i] = t;
+	    }
+	}
+	
 	public static void main (String[] args) {
 		
 		//Test Data
@@ -89,16 +130,18 @@ public class SuiteSortingHat {
 		String[][] preferenceArray = {suyash, zhenye, miguel, haozhe, shitian, alistair};
 		
 		SuiteSortingHat hobohat = new SuiteSortingHat(namesArray, preferenceArray);
-		hobohat.printPopularity();
-		
-		//TESTS
+//		hobohat.printPopularity();
+//		
+//		//TESTS
 //		Arrangement biasedAllocation = hobohat.orderBiasedAllocate();
 //		System.out.println("The happiness score for the first-come-first-serve allocation is: " + biasedAllocation.happiness);
 //		biasedAllocation.printAllocations();
-		
+//		
 		Arrangement randomAllocation = hobohat.randomAllocate();
-		System.out.println("The happiness score for the first-come-first-serve allocation is: " + randomAllocation.happiness);
+		System.out.println("The happiness score for the random allocation is: " + randomAllocation.happiness);
 		randomAllocation.printAllocations();
+		
+//		hobohat.bruteForceAllocate(hobohat.residents, 0);
 	}
 	
 }
